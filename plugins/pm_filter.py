@@ -64,7 +64,7 @@ async def next_page(bot, query):
         btn = [
             [
                 InlineKeyboardButton(
-                    text=f"[{get_size(file.file_size)}] {file.file_name}", callback_data=f'files#{file.file_id}'
+                    text=f" 🎬{get_size(file.file_size)} 🍿 {file.file_name}", callback_data=f'files#{file.file_id}'
                 ),
             ]
             for file in files
@@ -407,7 +407,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
             InlineKeyboardButton('➕ ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴩ ➕', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
         ], [
             InlineKeyboardButton('🔍 ꜱᴇᴀʀᴄʜ', switch_inline_query_current_chat=''),
-            InlineKeyboardButton('🤖 ᴜᴩᴅᴀᴛᴇ', url='https://t.me/A2Z_Botz')
+            InlineKeyboardButton('🤖 ᴜᴩᴅᴀᴛᴇ', url='https://t.me/+2p4g9JuMTBY1N2M1')
         ], [
             InlineKeyboardButton('ℹ️ ʜᴇʟᴩ', callback_data='help2'),
             InlineKeyboardButton('😊 ᴀʙᴏᴜᴛ', callback_data='about')
@@ -722,7 +722,7 @@ async def auto_filter(client, msg, spoll=False):
         btn = [
             [
                 InlineKeyboardButton(
-                    text=f"[{get_size(file.file_size)}] {file.file_name}", callback_data=f'{pre}#{file.file_id}'
+                    text=f" 🎬{get_size(file.file_size)} 🍿 {file.file_name}", callback_data=f'{pre}#{file.file_id}'
                 ),
             ]
             for file in files
@@ -789,7 +789,7 @@ async def auto_filter(client, msg, spoll=False):
             **locals()
         )
     else:
-        cap = f"Here is what i found for your query {search}"
+        cap = f=🎬 Tɪᴛᴛʟᴇ : <b><i>{search}</i></b>\n\n🗣 Rᴇqᴜᴇꜱᴛᴇᴅ By : <b><i>{message.from_user.mention}</i></b>\n👥 Uᴩʟᴏᴀᴅᴇᴅ By : <b><i>{message.chat.title}</i></b>\n\n📪 Yᴏᴜʀ Fɪʟᴇꜱ Iꜱ Rᴇᴀᴅy Nᴏᴡ👇👇"
     if imdb and imdb.get('poster'):
         try:
             await message.reply_photo(photo=imdb.get('poster'), caption=cap[:1024],
