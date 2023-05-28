@@ -546,3 +546,31 @@ async def save_template(client, message):
     template = message.text.split(" ", 1)[1]
     await save_group_settings(grp_id, 'template', template)
     await sts.edit(f"Successfully changed template for {title} to\n\n{template}")
+
+@Client.on_message(filters.command("set_tutorial"))
+async def set_tutorial_link(client, message):
+    chat_type = message.chat.type
+    if chat_type == enums.ChatType.PRIVATE:
+        await message.reply_text("<b>Please use this command in your group to set tutorial link.</b>")
+        return
+    elif chat_type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
+        grpid = message.chat.id
+        title = message.chat.title
+    else:
+        return 
+    
+    userid = message.from_user.id
+    user = await client.get_chat_member(grpid, userid)
+    if user.status != enums.ChatMemberStatus.ADMINISTRATOR and user.status != enums.ChatMemberStatus.OWNER and str(userid) not in ADMINS:
+        await message.reply_text("<b>You don't have access to use this command!</b>")
+        return
+    
+    try:
+        tutorial = re.findall("(?P<url>https?://[^\s]+)", message.text)[0]
+    except:
+        await message.reply_text("<b>🛠️ Command Incomplete 🤔\n\n➥Give me a tutorial link along with the command!\n\n📌Example👇\n\n<code>/set_tutorial https://example.com</code>\n\n━━━━━━━━━━━━━━━━━━\n© @Rk_botz\n</b>")
+        return
+    
+    await save_group_settings(grpid, 'tutorial', tutorial)
+    await message.reply_text(f"<b>📌 sᴜᴄᴄᴇssꜰᴜʟʏ ᴀᴅᴅᴇᴅ ᴛᴜᴛᴏʀɪᴀʟ 🎉\n\nʏᴏᴜʀ ᴛᴜᴛᴏʀɪᴀʟ ʟɪɴᴋ ꜰᴏʀ ɢʀᴏᴜᴘ {title}ɪs 👇\n\n☞{tutorial}\n</b>")   
+    
