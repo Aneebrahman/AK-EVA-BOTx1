@@ -250,9 +250,9 @@ async def start(client, message):
     if f_caption is None:
         f_caption = f"{files.file_name}"
     btn = [[
-        InlineKeyboardButton('Sᴜᴘᴘᴏʀᴛ', url='https://t.me/EDIT_REPO')
+        InlineKeyboardButton('Gʀᴏᴜᴘ', url='https://t.me/MH_moviesgroup01')
         ],[
-        InlineKeyboardButton('Oᴡɴᴇʀ', url='https://t.me/lallus_tg')
+        InlineKeyboardButton('Oᴡɴᴇʀ', url='https://t.me/psycho_009')
     ]]
     p=await client.send_cached_media(
         chat_id=message.from_user.id,
