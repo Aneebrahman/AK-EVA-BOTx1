@@ -240,13 +240,30 @@ async def start(client, message):
             f_caption=f_caption
     if f_caption is None:
         f_caption = f"{files.file_name}"
-    await client.send_cached_media(
+    btn = [[
+        InlineKeyboardButton('Sᴜᴘᴘᴏʀᴛ', url='https://t.me/EDIT_REPO')
+        ],[
+        InlineKeyboardButton('Oᴡɴᴇʀ', url='https://t.me/lallus_tg')
+    ]]
+    p=await client.send_cached_media(
         chat_id=message.from_user.id,
         file_id=file_id,
         caption=f_caption,
         protect_content=True if pre == 'filep' else False,
         )
-                    
+    btn = [[
+        InlineKeyboardButton("¿ 𝐇𝐨𝐰 𝐓𝐨 𝐒𝐚𝐯𝐞 𝐅𝐢𝐥𝐞𝐬 ?", url="https://graph.org/How-To-Save-Files-In-Saved-Messages-05-09")
+        ]]
+    s=await client.send_message(
+        chat_id=message.chat.id,
+        text=DELETE_TXT,
+        parse_mode=enums.ParseMode.HTML,
+        reply_markup=InlineKeyboardMarkup(btn)
+    )
+    await asyncio.sleep(100)
+    await s.delete()
+    await asyncio.sleep(100)
+    await p.delete()             
 
 @Client.on_message(filters.command('channel') & filters.user(ADMINS))
 async def channel_info(bot, message):
