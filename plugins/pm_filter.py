@@ -60,6 +60,8 @@ async def next_page(bot, query):
     if not files:
         return
     settings = await get_settings(query.message.chat.id)
+    pre = 'filep' if settings['file_secure'] else 'file'
+    temp.FILES_IDS[key] = files
     if settings['button']:
         btn = [
             [
@@ -82,18 +84,69 @@ async def next_page(bot, query):
             ]
             for file in files
         ]
-
-    if 0 < offset <= 10:
-        off_set = 0
-    elif offset == 0:
-        off_set = None
     else:
-        off_set = offset - 10
-    if n_offset == 0:
-        btn.append(
-            [InlineKeyboardButton("⏪ BACK", callback_data=f"next_{req}_{key}_{off_set}"),
-             InlineKeyboardButton(f"📃 Pages {math.ceil(int(offset) / 10) + 1} / {math.ceil(total / 10)}",
-                                  callback_data="pages")]
+        btn = [
+            [
+                InlineKeyboardButton(
+                    text=f"{file.file_name}", callback_data=f'{pre}#{file.file_id}'
+                ),
+                InlineKeyboardButton(
+                    text=f"{get_size(file.file_size)}",
+                    callback_data=f'{pre}#{file.file_id}',
+                ),
+            ]
+            for file in files
+        ]
+    try:
+        if settings['auto_delete']:
+            btn.insert(0, 
+            [
+                InlineKeyboardButton(f'ᴛɪᴘs', 'tips'),
+                InlineKeyboardButton(ғ'ɪɴғᴏ', 'info')
+            ]
+            )
+
+        else:
+            btn.insert(0, 
+            [
+                InlineKeyboardButton(f'ᴛɪᴘs', 'tips'),
+                InlineKeyboardButton(ғ'ɪɴғᴏ', 'info')
+            ]
+            )
+                
+    except KeyError:
+        grpid = await active_connection(str(query.message.from_user.id))
+        await save_group_settings(grpid, 'auto_delete', True)
+        settings = await get_settings(query.message.chat.id)
+        if settings['auto_delete']:
+            btn.insert(0, 
+            [
+                InlineKeyboardButton(f'ᴛɪᴘs', 'tips'),
+                InlineKeyboardButton(ғ'ɪɴғᴏ', 'info')
+            ]
+            )
+
+        else:
+            btn.insert(0, 
+            [
+                InlineKeyboardButton(f'ᴛɪᴘs', 'tips'),
+                InlineKeyboardButton(f'ɪɴғᴏ', 'info')
+            ]
+            )
+    try:
+        settings = await get_settings(query.message.chat.id)
+        if settings['max_btn']:
+            if 0 < offset <= 10:
+               off_set = 0
+            elif offset == 0:
+               off_set = None
+            else:
+               off_set = offset - 10
+            if n_offset == 0:
+                btn.append(
+                    [InlineKeyboardButton("⏪ BACK", callback_data=f"next_{req}_{key}_{off_set}"),
+                    InlineKeyboardButton(f"📃 Pages {math.ceil(int(offset) / 10) + 1} / {math.ceil(total / 10)}",
+                                     callback_data="pages")]
         )
     elif off_set is None:
         btn.append(
@@ -400,6 +453,10 @@ async def cb_handler(client: Client, query: CallbackQuery):
             caption=f_caption,
             protect_content=True if ident == 'checksubp' else False
         )
+    elif query.data == "tips":
+        await query.answer(TIPSBUTTON_TXT)
+    elif query.data == "info":
+        await query.answer(INFOBUTTON_TXT)
     elif query.data == "pages":
         await query.answer()
     elif query.data == "start":
