@@ -63,7 +63,7 @@ async def next_page(bot, query):
     pre = 'filep' if settings['file_secure'] else 'file'
     temp.FILES_IDS[key] = files
     if settings['button']:
-    btn = [
+       btn = [
         [
             InlineKeyboardButton(
                 text=f" 🎬{get_size(file.file_size)} 🍿 {file.file_name}", callback_data=f'files#{file.file_id}'
@@ -95,8 +95,7 @@ else:
             ),
         ]
         for file in files
-    ]
-    
+    ]    
     try:
         if settings['auto_delete']:
             btn.insert(0, 
